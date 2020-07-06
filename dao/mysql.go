@@ -1,6 +1,7 @@
 package dao
 
 import (
+	"bubble/conf"
 	"bubble/setting"
 	"fmt"
 	"github.com/jinzhu/gorm"
@@ -14,6 +15,15 @@ var (
 func InitMySQL(cfg *setting.MySQLConfig) (err error) {
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local",
 		cfg.User, cfg.Password, cfg.Host, cfg.Port, cfg.DB)
+	DB, err = gorm.Open("mysql", dsn)
+	if err != nil {
+		return
+	}
+	return DB.DB().Ping()
+}
+
+func InitMySQL2() (err error) {
+	dsn := conf.Mysql_Link_Info
 	DB, err = gorm.Open("mysql", dsn)
 	if err != nil {
 		return
